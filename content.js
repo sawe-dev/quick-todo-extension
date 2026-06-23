@@ -9,7 +9,7 @@
   let searchQuery = '';
 
   // キーバインド設定（将来的にユーザーがカスタマイズできるようにする土台）
-  const DEFAULT_KEYBIND = { key: 'F24', ctrl: false, shift: false, alt: false };
+  const DEFAULT_KEYBIND = { key: 'T', ctrl: true, shift: true, alt: false };
   let toggleKey = { ...DEFAULT_KEYBIND };
 
   function matchesKeybind(e, bind) {
