@@ -230,6 +230,7 @@
     const addInp = document.getElementById('qt-add-input');
     if (addInp) {
       addInp.onkeydown = e => {
+        if (matchesKeybind(e, toggleKey)) { e.preventDefault(); togglePanel(); return; }
         if (e.key === 'Enter') {
           e.stopPropagation();
           const inp  = document.getElementById('qt-add-input');
@@ -384,6 +385,7 @@
 
     document.getElementById('qt-add-btn').addEventListener('click', doAdd);
     document.getElementById('qt-add-input').addEventListener('keydown', e => {
+      if (matchesKeybind(e, toggleKey)) { e.preventDefault(); togglePanel(); return; }
       if (e.key === 'Enter') doAdd();
       if (e.key === 'Escape') togglePanel();
     });
