@@ -8,6 +8,17 @@
   let sortMode = '新しい順';
   let searchQuery = '';
 
+  // キーバインド設定（将来的にユーザーがカスタマイズできるようにする土台）
+  const DEFAULT_KEYBIND = { key: 'F24', ctrl: false, shift: false, alt: false };
+  let toggleKey = { ...DEFAULT_KEYBIND };
+
+  function matchesKeybind(e, bind) {
+    return e.key === bind.key
+      && e.ctrlKey === bind.ctrl
+      && e.shiftKey === bind.shift
+      && e.altKey === bind.alt;
+  }
+
   // ---- STORAGE (sync = Googleアカウントで同期) ----
   function loadTodos(cb) {
     chrome.storage.sync.get(['qt_todos'], result => {
@@ -78,10 +89,6 @@
       </div>
     `;
     document.body.appendChild(panel);
-
-    panel.addEventListener('keydown', e => {
-      if (e.key === 'F24') { e.preventDefault(); e.stopImmediatePropagation(); togglePanel(); }
-    }, true);
 
     updateDate();
     bindEvents(overlay);
@@ -435,12 +442,14 @@
     });
   }
 
-  // F24
-  function onF24(e) {
-    if (e.key === 'F24') { e.preventDefault(); e.stopImmediatePropagation(); togglePanel(); }
+  function onToggleKey(e) {
+    if (matchesKeybind(e, toggleKey)) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      togglePanel();
+    }
   }
-  window.addEventListener('keydown', onF24, true);
-  document.addEventListener('keydown', onF24, true);
+  window.addEventListener('keydown', onToggleKey, true);
 
   if (document.body) buildDOM();
   else document.addEventListener('DOMContentLoaded', buildDOM);
