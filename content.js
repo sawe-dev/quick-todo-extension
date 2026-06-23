@@ -461,13 +461,19 @@
   }
   window.addEventListener('keydown', onToggleKey, true);
 
-  // マウスサイドボタンで開閉
+  // マウスサイドボタンで開閉（mousedown/mouseup/auxclick全てブロックして戻る動作を防ぐ）
+  function blockSideButton(e) {
+    if (e.button === mouseToggleButton) { e.preventDefault(); e.stopPropagation(); }
+  }
   window.addEventListener('mousedown', e => {
     if (e.button === mouseToggleButton) {
       e.preventDefault();
+      e.stopPropagation();
       togglePanel();
     }
   }, true);
+  window.addEventListener('mouseup', blockSideButton, true);
+  window.addEventListener('auxclick', blockSideButton, true);
 
   if (document.body) buildDOM();
   else document.addEventListener('DOMContentLoaded', buildDOM);
