@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Quick TODO",
+  "version": "5.0",
+  "description": "F24で開くTODOパネル。Googleアカウントで同期。",
+  "permissions": ["storage"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["panel.css"],
+      "run_at": "document_end"
+    }
+  ]
+}
