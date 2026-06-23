@@ -9,8 +9,11 @@
   let searchQuery = '';
 
   // キーバインド設定（将来的にユーザーがカスタマイズできるようにする土台）
-  const DEFAULT_KEYBIND = { key: 'F24', ctrl: false, shift: false, alt: false };
+  const DEFAULT_KEYBIND = { key: '.', ctrl: true, shift: false, alt: false };
   let toggleKey = { ...DEFAULT_KEYBIND };
+
+  // マウスサイドボタンで開閉する機能（button 3=戻る, 4=進む）
+  let mouseToggleButton = 3;
 
   function matchesKeybind(e, bind) {
     return e.key === bind.key
@@ -83,7 +86,7 @@
         </div>
         <div id="qt-list"></div>
         <div id="qt-footer">
-          <p>🌱 F24 で開閉</p>
+          <p>🌱 Ctrl+. / サイドボタンで開閉</p>
           <button id="qt-clear-done">完了済みを削除</button>
         </div>
       </div>
@@ -94,13 +97,6 @@
     panel.addEventListener('keydown', e => {
       if (matchesKeybind(e, toggleKey)) { e.preventDefault(); e.stopPropagation(); togglePanel(); }
     }, true);
-
-    // DEBUG: サイドボタンを押したとき何が届いているか確認用（後で消す）
-    ['keydown', 'keyup', 'mousedown', 'mouseup'].forEach(type => {
-      panel.addEventListener(type, e => {
-        console.log(`[QuickTODO DEBUG] ${type}:`, { key: e.key, code: e.code, button: e.button, type: e.type });
-      }, true);
-    });
 
     updateDate();
     bindEvents(overlay);
@@ -464,6 +460,14 @@
     }
   }
   window.addEventListener('keydown', onToggleKey, true);
+
+  // マウスサイドボタンで開閉
+  window.addEventListener('mousedown', e => {
+    if (e.button === mouseToggleButton) {
+      e.preventDefault();
+      togglePanel();
+    }
+  }, true);
 
   if (document.body) buildDOM();
   else document.addEventListener('DOMContentLoaded', buildDOM);
