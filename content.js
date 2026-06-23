@@ -90,6 +90,11 @@
     `;
     document.body.appendChild(panel);
 
+    // パネル内のどの要素にフォーカスがあってもF24を捕まえる
+    panel.addEventListener('keydown', e => {
+      if (matchesKeybind(e, toggleKey)) { e.preventDefault(); e.stopPropagation(); togglePanel(); }
+    }, true);
+
     updateDate();
     bindEvents(overlay);
     renderTodos();
