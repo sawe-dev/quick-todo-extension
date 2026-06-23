@@ -95,6 +95,13 @@
       if (matchesKeybind(e, toggleKey)) { e.preventDefault(); e.stopPropagation(); togglePanel(); }
     }, true);
 
+    // DEBUG: サイドボタンを押したとき何が届いているか確認用（後で消す）
+    ['keydown', 'keyup', 'mousedown', 'mouseup'].forEach(type => {
+      panel.addEventListener(type, e => {
+        console.log(`[QuickTODO DEBUG] ${type}:`, { key: e.key, code: e.code, button: e.button, type: e.type });
+      }, true);
+    });
+
     updateDate();
     bindEvents(overlay);
     renderTodos();
